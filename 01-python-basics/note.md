@@ -575,3 +575,94 @@ try:
 except ValueError as e:
     print(f"Error: {e}")
 ```
+
+## Exception Handling
+
+### Why It Matters
+
+Real systems face bad input, missing files, network failures.
+Without exception handling your program crashes completely.
+With it — you fail gracefully and stay in control.
+
+### Structure
+
+```python
+try:
+    # code that might fail
+except SpecificError:
+    # runs if that error occurs
+except (ErrorOne, ErrorTwo):
+    # catches multiple errors
+else:
+    # runs ONLY if no exception occurred
+finally:
+    # ALWAYS runs — even if exception occurred
+    # use for cleanup — closing connections, logging
+```
+
+### Common Built-in Exceptions
+
+| Exception          | Cause                            |
+|--------------------|----------------------------------|
+| ValueError         | Wrong value type or range        |
+| TypeError          | Wrong data type                  |
+| FileNotFoundError  | File does not exist              |
+| KeyError           | Dictionary key not found         |
+| ZeroDivisionError  | Dividing by zero                 |
+| json.JSONDecodeError| Invalid JSON format             |
+| IOError            | File read/write failure          |
+
+### Key Rules
+
+- ALWAYS catch specific exceptions — never bare `except:`
+- `open()` must be INSIDE `try` to catch FileNotFoundError
+- `finally` runs no matter what — use it for cleanup
+- Raise exceptions yourself to enforce rules
+
+### Raising Exceptions
+
+```python
+def calculate_grade(score):
+    if not isinstance(score, (int, float)):
+        raise TypeError("Score must be a number")
+    if score < 0 or score > 100:
+        raise ValueError("Score must be between 0 and 100")
+```
+
+### Custom Exceptions
+
+```python
+class InvalidScoreError(Exception):
+    pass
+
+raise InvalidScoreError("Score out of range")
+```
+
+### File Handling Pattern
+
+```python
+# Write
+try:
+    with open("data.json", "w") as file:
+        json.dump(data, file, indent=4)
+except IOError:
+    print("Error saving file")
+
+# Read
+try:
+    with open("data.json", "r") as file:
+        data = json.load(file)
+except (FileNotFoundError, json.JSONDecodeError):
+    print("File not found or corrupted")
+finally:
+    print("Operation complete")
+```
+
+### ❌ Never Do This
+
+```python
+try:
+    risky_code()
+except:              # swallows ALL errors including bugs
+    pass             # silently ignores everything
+```
