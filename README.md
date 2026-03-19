@@ -10,8 +10,8 @@ To become a **Full-Stack Machine Learning Engineer**, mastering the entire pipel
 
 ## 🏗️ Roadmap
 
-- [ ] **Phase 01:** Python Fundamentals & Dev Environment
-- [ ] **Phase 02:** Advanced Python & Mathematics for ML
+- [ X ] **Phase 01:** Python Fundamentals & Dev Environment
+- [ X ] **Phase 02:** Advanced Python & Mathematics for ML
 - [ ] **Phase 03:** Data Analysis & Visualization
 - [ ] **Phase 04:** Backend Engineering (FastAPI)
 - [ ] **Phase 05:** Data Engineering Fundamentals
