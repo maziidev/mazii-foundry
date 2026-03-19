@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "title": "learn python",
+        "completed": true
+    },
+    {
+        "id": 2,
+        "title": "setup virtual env",
+        "completed": true
+    }
+]
