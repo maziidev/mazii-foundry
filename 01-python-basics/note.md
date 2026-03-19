@@ -425,3 +425,131 @@ f"{value:>10}"      # right align in 10 char field
 
 Functions should do ONE job.
 Pass data in as parameters — don't reach outside for it.
+
+## File I/O & Context Managers
+
+### Why `with` is Non-Negotiable
+
+Opening a file gives your program a file descriptor.
+Forgetting to close it = resource leak = server crashes in production.
+`with` closes the file automatically — even if your code crashes.
+
+```python
+# ❌ Wrong — easy to forget close()
+file = open("data.txt", "r")
+content = file.read()
+file.close()
+
+# ✅ Right — closes automatically
+with open("data.txt", "r") as file:
+    content = file.read()
+```
+
+### File Modes
+
+| Mode | Meaning                        |
+|------|--------------------------------|
+| "r"  | Read — file must exist         |
+| "w"  | Write — creates or overwrites  |
+| "a"  | Append — adds to end           |
+| "rb" | Read binary                    |
+| "wb" | Write binary                   |
+
+### Three Ways to Read
+
+```python
+file.read()       # entire file as one string
+file.readlines()  # entire file as list of lines
+for line in file  # one line at a time — memory efficient
+    line.strip()  # removes \n from each line
+```
+
+### JSON Files
+
+Use json for structured data — APIs, configs, persistence.
+
+```python
+import json
+
+# Write — dict to JSON file
+with open("data.json", "w") as file:
+    json.dump(data, file, indent=4)
+
+# Read — JSON file to dict
+with open("data.json", "r") as file:
+    data = json.load(file)
+```
+
+### Nested Dictionaries
+
+Store related data together as values:
+
+```python
+students = {
+    "Godswill": {"score": 95, "grade": "A"},
+    "Ada":      {"score": 55, "grade": "B"}
+}
+
+# Access nested values
+students["Godswill"]["score"]  # 95
+students["Godswill"]["grade"]  # A
+```
+
+### Key Rules
+
+- Always use `with` for file handling — no exceptions
+- `"w"` destroys existing content — use `"a"` to preserve
+- JSON only serializes: dict, list, str, int, float, bool
+- Sets cannot be serialized to JSON
+
+---
+
+### 🔨 Practical Example — Student Report System
+
+```python
+"""
+Build a student report system that:
+1. Stores 5 students with scores in a dictionary
+2. Calculates grades and builds nested structure
+3. Saves to JSON file
+4. Reads back and prints formatted report
+"""
+import json
+
+
+def calculate_grade(score):
+    if score >= 70:
+        return "A"
+    elif score >= 50:
+        return "B"
+    else:
+        return "F"
+
+
+def format_student_report(name, score, grade):
+    return f"{'Name':<10} {name}\n{'Score':<10} {score:.2f}\n{'Grade':<10} {grade}\n"
+
+
+student = {
+    "Emmanuel": 50,
+    "Jessica":  70,
+    "Mazii":    95,
+    "Chinelo":  80,
+    "Emeka":    40
+}
+
+# Build nested structure with grades
+for key, value in student.items():
+    grade = calculate_grade(value)
+    student[key] = {"score": value, "grade": grade}
+
+# Write to JSON
+with open("student_db.json", "w") as file:
+    json.dump(student, file, indent=4)
+
+# Read back and print
+with open("student_db.json", "r") as file:
+    data = json.load(file)
+    for name, info in data.items():
+        print(format_student_report(name, info["score"], info["grade"]))
+```

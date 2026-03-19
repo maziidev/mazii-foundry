@@ -215,28 +215,77 @@
 
 # dictionaries
 
-user ={
+# user ={
+#     "name": "Godswill",
+#     "age": 25,
+#     "city": "Enugu",
+#     "is_active": True
+# }
+
+# print(user.get("age"))
+# print(user["name"])
+
+# # Adding and updating
+# user["email"] = "god@mail.com"   # adds new key
+# user["age"] = 26                  # updates existing key
+
+# # Removing
+# del user["city"]
+# user.pop("is_active")
+
+# # Looping through
+# for key, value in user.items():
+#     print(f"{key}: {value}")
+
+# # Just keys or just values
+# print(user.keys())
+# print(user.values())
+
+
+# READING FILES IN PYTHON USING THE WITH KEYWORD
+
+# 3 ways to read file
+
+# 1. reads entire file as one string
+# with open("student.txt", "r") as file:
+    # content = file.read()
+    # print(content)
+
+# 2. entire file as a list of lines
+# with open("student.txt", "r") as f:
+#     lines = f.readlines()
+#     print(lines)
+
+# 3. read one line at a time - memory efficient
+# with open("student.txt", "r") as f:
+#     for line in f:
+#         print(line.strip())
+
+
+# writing FILES IN PYTHON USING THE WITH KEYWORD
+
+# with open("output.txt", "w") as file:
+#     file.write("Hello Godswill\n")
+#     file.write("This is line 2\n")
+
+
+# with open("output.txt", "a") as file:
+#     file.write("This line was appended\n")
+
+
+# WORKING WITH JSON FILE
+import json
+
+student = {
     "name": "Godswill",
-    "age": 25,
-    "city": "Enugu",
-    "is_active": True
+    "score": 95,
+    "grade": "A"
 }
 
-print(user.get("age"))
-print(user["name"])
+with open("student.json", "w")as file:
+    json.dump(student, file, indent=4)
 
-# Adding and updating
-user["email"] = "god@mail.com"   # adds new key
-user["age"] = 26                  # updates existing key
-
-# Removing
-del user["city"]
-user.pop("is_active")
-
-# Looping through
-for key, value in user.items():
-    print(f"{key}: {value}")
-
-# Just keys or just values
-print(user.keys())
-print(user.values())
+with open("student.json", "r") as file:
+    data = json.load(file)
+    print(data["name"])
+    print(type(data))

@@ -1,0 +1,22 @@
+{
+    "Emmanuel": {
+        "score": 50,
+        "grade": "B"
+    },
+    "Jessica": {
+        "score": 70,
+        "grade": "A"
+    },
+    "Mazii": {
+        "score": 95,
+        "grade": "A"
+    },
+    "Chinelo": {
+        "score": 80,
+        "grade": "A"
+    },
+    "Emeka": {
+        "score": 40,
+        "grade": "F"
+    }
+}
