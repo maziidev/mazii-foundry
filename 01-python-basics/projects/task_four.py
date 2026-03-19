@@ -11,36 +11,58 @@ import json
 
 
 def calculate_grade(score):
+    if not isinstance(score, (int, float)):
+        raise TypeError("Score must be a number")
+
+    if score < 0 or score > 100:
+        raise ValueError("Score must be between 0 and 100")
+
     if score >= 70:
-        grade = "A"
+        return "A"
     elif score >= 50:
-        grade = "B"
+        return "B"
     else:
-        grade = "F"
+        return "F"
 
-    return grade
-
-student = {
-    "Emmanuel": 50,
-    "Jessica": 70,
-    "Mazii": 95,
-    "Chinelo": 80,
-    "Emeka": 40
-}
 
 def format_student_report(name, score, grade):
     return f"{'Name':<10} {name}\n{'Score':<10} {score:.2f}\n{'Grade':<10} {grade}\n"
 
 
+student = {
+    "Emmanuel": 50,
+    "Jessica":  70,
+    "Mazii":    95,
+    "Chinelo":  80,
+    "Emeka":    40
+}
+
+# Build nested structure with grades
 for key, value in student.items():
     grade = calculate_grade(value)
     student[key] = {"score": value, "grade": grade}
 
-with open("student_db.json", "w") as file:
-    json.dump(student, file, indent=4)
+# Write to JSON
+try:
+    with open("student_db.json", "w") as file:
+        json.dump(student, file, indent=4)
+except IOError:
+    print("Error saving to student_db.json")
 
-with open("student_db.json", "r") as file:
-    data = json.load(file)
-    for name, info in data.items():
-        print(format_student_report(name, info["score"], info["grade"]))
+
+# Read back and print
+try:
+    with open("student_db.json", "r") as file:
+        data = json.load(file)
+        for name, info in data.items():
+            print(format_student_report(name, info["score"], info["grade"]))
+except (FileNotFoundError, json.JSONDecodeError):
+    print("file not found")
+finally:
+    print("Report generation complete.")
+
+try:
+    print(calculate_grade(150))
+except ValueError as e:
+    print(f"Error: {e}")
 

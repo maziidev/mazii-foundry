@@ -518,6 +518,12 @@ import json
 
 
 def calculate_grade(score):
+    if not isinstance(score, (int, float)):
+        raise TypeError("Score must be a number")
+
+    if score < 0 or score > 100:
+        raise ValueError("Score must be between 0 and 100")
+
     if score >= 70:
         return "A"
     elif score >= 50:
@@ -544,12 +550,28 @@ for key, value in student.items():
     student[key] = {"score": value, "grade": grade}
 
 # Write to JSON
-with open("student_db.json", "w") as file:
-    json.dump(student, file, indent=4)
+try:
+    with open("student_db.json", "w") as file:
+        json.dump(student, file, indent=4)
+except IOError:
+    print("Error saving to student_db.json")
+
 
 # Read back and print
-with open("student_db.json", "r") as file:
-    data = json.load(file)
-    for name, info in data.items():
-        print(format_student_report(name, info["score"], info["grade"]))
+try:
+    with open("student_db.json", "r") as file:
+        data = json.load(file)
+        for name, info in data.items():
+            print(format_student_report(name, info["score"], info["grade"]))
+except FileNotFoundError:
+    print("file not found")
+finally:
+    print("Report generation complete.")
+
+
+# to test our 0 - 100 function error
+try:
+    print(calculate_grade(150))
+except ValueError as e:
+    print(f"Error: {e}")
 ```
