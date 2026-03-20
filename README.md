@@ -34,4 +34,84 @@ To become a **Full-Stack Machine Learning Engineer**, mastering the entire pipel
 - **Environment:** VS Code, Git, Terminal
 
 ---
+
+## 📦 Package Management
+
+### Switched from `pip` to `uv`
+
+We migrated from `pip` + `venv` to `uv` for faster, cleaner dependency management.
+
+`uv` is a modern Python package manager written in Rust. It replaces `pip`, `venv`, and `pip-tools` in one tool.
+
+---
+
+### Why We Switched
+
+- `pip` requires manual venv creation and activation per project
+- Multiple stages created multiple conflicting venvs
+- `uv` manages one unified environment at the `mazii-foundry` root
+- `uv` is significantly faster than `pip`
+
+---
+
+### Installation
+
+```bash
+# Option 1 — curl installer
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source $HOME/.local/bin/env
+
+# Option 2 — snap (if Option 1 fails)
+sudo snap install astral-uv --classic
+```
+
+Verify installation:
+
+```bash
+uv --version
+```
+
+---
+
+### Project Setup
+
+```bash
+# Initialize uv in your project root
+cd ~/Documents/mazii-foundry
+uv init .
+
+# Add dependencies
+uv add numpy pandas matplotlib seaborn plotly jupyter ipykernel
+
+# Run a file
+uv run python3 filename.py
+
+# Add a new package later
+uv add package-name
+```
+
+---
+
+### Project Structure After Setup
+
+```
+mazii-foundry/
+├── .venv/              ← single unified virtual environment
+├── .python-version     ← locked Python version
+├── pyproject.toml      ← replaces requirements.txt
+├── 01-python-basics/
+├── 02-advanced-python/
+├── 03-data-analysis/
+└── README.md
+```
+
+---
+
+### VS Code Setup
+
+1. Open the entire `mazii-foundry` folder in VS Code
+2. `Ctrl + Shift + P` → `Python: Select Interpreter`
+3. Select: `~/Documents/mazii-foundry/.venv/bin/python3`
+4. One interpreter for all stages — no confusion
+
 *"We don't just use tools; we understand how they are built."*
